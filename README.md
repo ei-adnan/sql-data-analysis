@@ -38,10 +38,10 @@ The warehouse follows a **star schema** in a `gold` schema (analytics-ready laye
 
 ```mermaid
 erDiagram
-    SALES }o--|| CUSTOMERS : "customer_key"
-    SALES }o--|| PRODUCTS : "product_key"
+    FACT_SALES }o--|| CUSTOMERS : "customer_key"
+    FACT_SALES }o--|| PRODUCTS : "product_key"
 
-    SALES {
+    FACT_SALES {
         nvarchar order_number
         int product_key FK
         int customer_key FK
@@ -52,7 +52,7 @@ erDiagram
         tinyint quantity
         int price
     }
-    CUSTOMERS {
+    DIM_CUSTOMERS {
         int customer_key PK
         nvarchar customer_number
         nvarchar first_name
@@ -63,7 +63,7 @@ erDiagram
         date birthdate
         date create_date
     }
-    PRODUCTS {
+    DIM_PRODUCTS {
         int product_key PK
         nvarchar product_number
         nvarchar product_name
