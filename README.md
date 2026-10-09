@@ -1,4 +1,4 @@
-# SQL Data Warehouse Analytics
+# Data Analysis with SQL
 
 **End-to-end SQL analytics project on a star-schema data warehouse: from raw exploration to reusable customer and product reporting views.**
 
@@ -17,7 +17,7 @@ Built with **SQL Server (T-SQL)** | 18K+ customers | 60K sales lines | 295 produ
 - [Presentation](#presentation)
 - [Skills Demonstrated](#skills-demonstrated)
 - [How to Run](#how-to-run)
-- [Limitations and Next Steps](#limitations-and-next-steps)
+- [Data Quality Notes](#data-quality-notes)
 
 ---
 
@@ -38,10 +38,10 @@ The warehouse follows a **star schema** in a `gold` schema (analytics-ready laye
 
 ```mermaid
 erDiagram
-    FACT_SALES }o--|| CUSTOMERS : "customer_key"
-    FACT_SALES }o--|| PRODUCTS : "product_key"
+    SALES }o--|| CUSTOMERS : "customer_key"
+    SALES }o--|| PRODUCTS : "product_key"
 
-    FACT_SALES {
+    SALES {
         nvarchar order_number
         int product_key FK
         int customer_key FK
@@ -52,7 +52,7 @@ erDiagram
         tinyint quantity
         int price
     }
-    DIM_CUSTOMERS {
+    CUSTOMERS {
         int customer_key PK
         nvarchar customer_number
         nvarchar first_name
@@ -63,7 +63,7 @@ erDiagram
         date birthdate
         date create_date
     }
-    DIM_PRODUCTS {
+    PRODUCTS {
         int product_key PK
         nvarchar product_number
         nvarchar product_name
@@ -133,7 +133,7 @@ The scripts follow a structured path used in real analytics engagements: **under
 
 The final two scripts consolidate the analysis into **reusable views** in the `gold` schema.
 
-### `gold.report_customers`
+### `report_customers`
 
 One row per customer, built in three layers (base query, aggregation, KPI calculation).
 
@@ -142,7 +142,7 @@ One row per customer, built in three layers (base query, aggregation, KPI calcul
 - **Metrics:** total orders, sales, quantity, products, last order date, lifespan (months)
 - **KPIs:** recency, average order value, average monthly spend
 
-### `gold.report_products`
+### `report_products`
 
 One row per product, using the same layered pattern.
 
@@ -178,7 +178,7 @@ The full write-up with tables, recommendations and data caveats is in `docs/`.
 
 ## Presentation
 
-An executive-style slide deck summarises the analysis for a non-technical audience: business problem, headline KPIs, customer and product insights, and recommendations. It was created with [Gamma](https://gamma.app) and exported to PowerPoint.
+An executive-style slide deck summarises the analysis for a non-technical audience: business problem, headline KPIs, customer and product insights, and recommendations.
 
 **[View the presentation on Gamma](https://gamma.app/docs/ut0yyeu6s73xiq9)** | [Download the .pptx](presentation/Business_presentation.pptx)
 
@@ -212,3 +212,8 @@ An executive-style slide deck summarises the analysis for a non-technical audien
 - One thing I realized later is that recency turned out to be not accurate because I measured against the day (GETDATE()) I ran the queries (about 137 months), So should have used the date when the data ends in January 2014. 
 - 17 customers have no birthdate.
 - 2010 (Dec only) and 2014 (Jan only) should not be used in year-on-year comparisons; 19 order rows have no order date and are excluded from the reports.
+
+## Author
+ 
+**Mohammed Adnan**\
+Data Analyst
